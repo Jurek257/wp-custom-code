@@ -1,0 +1,205 @@
+<div class="multi-selectors">
+  <!-- Кнопка 1: SELECT TOUR с иконками -->
+  <div class="selector" data-name="tour">
+    <button class="dropbtn" aria-haspopup="listbox" aria-expanded="false">
+      <span class="icon-left">🏖️</span>
+      <span class="btn-text">SELECT TOUR</span>
+      <span class="icon-right">▼</span>
+    </button>
+    <div class="dropdown" role="listbox" tabindex="-1">
+      <div class="option" role="option" data-value="Basic">Basic</div>
+      <div class="option" role="option" data-value="Premium">Premium</div>
+      <div class="option" role="option" data-value="Luxury">Luxury</div>
+    </div>
+  </div>
+
+  <!-- Кнопка 2: SELECT DATE с иконками -->
+  <div class="selector" data-name="date">
+    <button class="dropbtn" aria-haspopup="listbox" aria-expanded="false">
+      <span class="icon-left">📅</span>
+      <span class="btn-text">SELECT DATE</span>
+      <span class="icon-right">▼</span>
+    </button>
+    <div class="dropdown" role="listbox" tabindex="-1">
+      <div class="option" role="option" data-value="29">29</div>
+      <div class="option" role="option" data-value="30">30</div>
+      <div class="option" role="option" data-value="31">31</div>
+    </div>
+  </div>
+
+  <!-- Кнопка 3: NUMBER OF QUESTS с иконками -->
+  <div class="selector" data-name="quests">
+    <button class="dropbtn" aria-haspopup="listbox" aria-expanded="false">
+      <span class="icon-left">👤</span>
+      <span class="btn-text">NUMBER OF QUESTS</span>
+      <span class="icon-right">▼</span>
+    </button>
+    <div class="dropdown" role="listbox" tabindex="-1">
+      <div class="option" role="option" data-value="1">1</div>
+      <div class="option" role="option" data-value="2">2</div>
+      <div class="option" role="option" data-value="3">3</div>
+    </div>
+  </div>
+
+  <!-- Кнопка купить -->
+  <button id="buyBtn" class="buy-btn">Купить</button>
+</div>
+
+<style>
+.multi-selectors {
+  display: flex;
+  flex-direction: column; /* вертикальный стек */
+  align-items: flex-start;
+}
+
+.selector {
+  position: relative;
+  margin-bottom: 20px; /* отступ между дропдаунами */
+  min-width: 275px;
+}
+
+.multi-selectors .selector:last-of-type {
+  margin-bottom: 35px; /* отступ между последней кнопкой и кнопкой Купить */
+}
+
+.dropbtn,
+.buy-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #fff; /* белая рамка 1px */
+  background: transparent; /* прозрачная кнопка */
+  color: #fff; /* белый текст */
+  cursor: pointer;
+  min-width: 275px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.dropbtn .icon-left,
+.dropbtn .icon-right {
+  color: #fff; /* белые иконки */
+}
+
+.buy-btn {
+  border: 1px solid #fff; /* белая рамка */
+  background: transparent; /* прозрачный фон */
+  color: #fff;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background: #000; /* можно сделать чёрный фон для выпадающего списка */
+  border: 1px solid #fff; /* белая рамка */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  min-width: 160px;
+  z-index: 50;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.option {
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+  color: #fff; /* белый текст */
+}
+
+.option:hover,
+.option[aria-selected="true"] {
+  background: rgba(255, 255, 255, 0.1); /* лёгкий белый ховер */
+}
+
+.error {
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.12) inset;
+}
+</style>
+
+
+
+<script>
+(function(){
+  const selectors = document.querySelectorAll('.multi-selectors .selector');
+  const buyBtn = document.getElementById('buyBtn');
+
+  selectors.forEach(sel => {
+    const btn = sel.querySelector('.dropbtn');
+    const list = sel.querySelector('.dropdown');
+    const options = list.querySelectorAll('.option');
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAllDropdownsExcept(list);
+      const opened = list.style.display === 'block';
+      setDropdownState(list, btn, !opened);
+    });
+
+    options.forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        options.forEach(o => o.removeAttribute('aria-selected'));
+        opt.setAttribute('aria-selected', 'true');
+        sel.dataset.selected = opt.dataset.value;
+
+        // Обновляем текст кнопки, оставляя иконки
+        const btnText = btn.querySelector('.btn-text');
+        if (btnText) btnText.textContent = opt.textContent;
+        else btn.textContent = opt.textContent;
+
+        setDropdownState(list, btn, false);
+      });
+
+      opt.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') opt.click();
+      });
+    });
+
+    document.addEventListener('click', () => setDropdownState(list, btn, false));
+  });
+
+  function closeAllDropdownsExcept(exceptList) {
+    document.querySelectorAll('.multi-selectors .dropdown').forEach(l => {
+      if (l !== exceptList) {
+        const btn = l.parentElement.querySelector('.dropbtn');
+        setDropdownState(l, btn, false);
+      }
+    });
+  }
+
+  function setDropdownState(listEl, btnEl, open) {
+    listEl.style.display = open ? 'block' : 'none';
+    btnEl.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  buyBtn.addEventListener('click', () => {
+    const payload = {};
+    let ok = true;
+
+    selectors.forEach(sel => {
+      const name = sel.dataset.name || sel.getAttribute('id') || 'unknown';
+      const val = sel.dataset.selected || null;
+      if (!val) {
+        ok = false;
+        sel.querySelector('.dropbtn').classList.add('error');
+        setTimeout(()=> sel.querySelector('.dropbtn').classList.remove('error'), 1500);
+      } else {
+        payload[name] = val;
+      }
+    });
+
+    if (!ok) {
+      alert('Пожалуйста, выберите все опции.');
+      return;
+    }
+
+    const params = new URLSearchParams(payload).toString();
+    const buyUrl = '/buy?' + params;
+    window.location.href = buyUrl;
+  });
+
+})();
+</script>
