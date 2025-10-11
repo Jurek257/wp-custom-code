@@ -1,6 +1,5 @@
-<!-- Полный блок — копируй и вставляй в HTML-виджет -->
 <div class="multi-selectors" aria-label="Tour booking controls">
-  <!-- Кнопка 1: SELECT TOUR с иконками -->
+  <!-- Кнопка 1: SELECT TOUR -->
   <div class="selector" data-name="tour">
     <button class="dropbtn" aria-haspopup="listbox" aria-expanded="false" type="button">
       <span class="icon-left">
@@ -21,9 +20,9 @@
     </div>
   </div>
 
-  <!-- Кнопка 2: SELECT DATE с иконками -->
+  <!-- Кнопка 2: SELECT DATE с календарем -->
   <div class="selector" data-name="date">
-    <button class="dropbtn" aria-haspopup="listbox" aria-expanded="false" type="button">
+    <button class="dropbtn" type="button">
       <span class="icon-left">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true">
           <path d="M3 9H21M7 3V5M17 3V5M6 12H8M11 12H13M16 12H18M6 15H8M11 15H13M16 15H18M6 18H8M11 18H13M16 18H18M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z"
@@ -33,16 +32,14 @@
       <span class="btn-text">SELECT DATE</span>
       <span class="icon-right" aria-hidden="true">▼</span>
     </button>
-    <div class="dropdown" role="listbox" tabindex="-1">
-      <div class="option" role="option" data-value="29" tabindex="0">29</div>
-      <div class="option" role="option" data-value="30" tabindex="0">30</div>
-      <div class="option" role="option" data-value="31" tabindex="0">31</div>
+    <div class="dropdown-calendar">
+      <input type="date" id="calendar" />
     </div>
   </div>
 
-  <!-- Кнопка 3: NUMBER OF QUESTS с иконками -->
+  <!-- Кнопка 3: NUMBER OF QUESTS -->
   <div class="selector" data-name="quests">
-    <button class="dropbtn" aria-haspopup="listbox" aria-expanded="false" type="button">
+    <button class="dropbtn" type="button">
       <span class="icon-left">
         <svg height="20" width="20" viewBox="0 0 512 512" fill="#ffffff" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M458.159,404.216c-18.93-33.65-49.934-71.764-100.409-93.431c-28.868,20.196-63.938,32.087-101.745,32.087
@@ -69,226 +66,163 @@
 </div>
 
 <style>
-  /* Параметры: --multi-max — 90% по умолчанию, можно заменить на 800px и т.д. */
-  .multi-selectors {
-    --multi-max: 90%;     /* главный контейнер не шире 90% родителя */
-    --multi-max-px: none; /* при желании можно задать фиксированный max-width в px, например 800px */
-  }
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
 
-  /* Контейнер: центрируем по горизонтали и ограничиваем максимальную ширину */
-  .multi-selectors {
-    width: 100%;                 /* стремится занять 100% родителя, но... */
-    max-width: var(--multi-max); /* ...не больше 90% (или другого значения) */
-    /* если хочешь добавить фиксированный пиксельный максимум — раскомментируй следующую строку:
-       max-width: min(var(--multi-max), var(--multi-max-px)); */
-    margin: 0 auto;              /* центрирование по горизонтали */
-    box-sizing: border-box;
-    display: block;              /* простой блочный контейнер */
-    padding: 0;
-  }
+.multi-selectors {
+  max-width: 90%;
+  margin: 0 auto;
+  width: 100%;
+}
 
-  /* Всё ниже (дети) берут 100% ширины мульти-селектора */
-  .selector {
-    width: 100%;                 /* 100% от .multi-selectors */
-    max-width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    position: relative;
-    display: block;
-  }
+.selector {
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
 
-  .multi-selectors .selector:last-of-type {
-    margin-bottom: 35px;
-  }
+/* Общий стиль кнопок */
+.dropbtn, .buy-btn {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px; /* добавлен padding-top и padding-bottom */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  border: 1px solid #fff;
+  background: transparent;
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400; /* regular */
+  font-size: 14px;
+  border-radius: 0px; /* убран corner radius для первых трех dropbtn */
+}
 
-  /* Кнопки и dropdown'ы занимают всю ширину селектора */
-  .dropbtn,
-  .buy-btn,
-  .dropdown {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
+/* Убираем стандартный синий фокус и подсветку */
+.dropbtn:focus,
+.buy-btn:focus,
+.dropdown-calendar input:focus {
+  outline: none;
+  outline-offset: 2px;
+  box-shadow: none;
+}
 
-  .dropbtn {
-    padding: 8px 14px;
-    border-radius: 6px;
-    border: 1px solid #fff;
-    background: transparent;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    font: inherit;
-    text-align: left;
-  }
+.buy-btn {
+  background-color: #FF7676;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 600;
+  border-radius: 6px; /* оставляем скругление для кнопки Купить */
+  justify-content: center;
+}
 
-  .buy-btn {
-    background-color: #FF7676;
-    color: #ffffff;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
-    font-size: 24px;
-    border: none;
-    border-radius: 6px;
-    padding: 12px 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s;
-  }
+.dropbtn:hover { background: rgba(255,255,255,0.1); }
+.buy-btn:hover { background-color: #ff5f5f; }
 
-  .buy-btn:hover { background-color: #ff5f5f; }
+/* Выпадающие меню для первой и третьей кнопки */
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background: #fff;      
+  color: #000;           
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  z-index: 9999;         
+}
 
-  .dropdown {
-    display: none;
-    position: absolute;
-    top: 110%;
-    left: 0;
-    background: transparent;
-    border: 1px solid #fff;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    z-index: 50;
-    border-radius: 6px;
-    overflow: hidden;
-    transform-origin: top left;
-  }
+.option {
+  padding: 8px 12px;
+  color: #000;           
+  cursor: pointer;
+}
 
-  .option {
-    padding: 8px 12px;
-    cursor: pointer;
-    user-select: none;
-    color: #fff;
-  }
+.option:hover, .option[aria-selected="true"] { background: rgba(0,0,0,0.1); }
 
-  .option:hover,
-  .option[aria-selected="true"] {
-    background: rgba(255,255,255,0.2);
-  }
+/* Календарь */
+.dropdown-calendar {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  z-index: 9999;         
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+}
 
-  .error { box-shadow: 0 0 0 3px rgba(255,0,0,0.12) inset; }
-
-  .dropbtn .icon-left,
-  .dropbtn .icon-right { color: #fff; }
-  .dropbtn .icon-left { margin-right: 6px; }
-  .dropbtn .icon-right { margin-left: 6px; }
-
-  .dropbtn .icon-left svg { width: 20px; height: 20px; display:block; }
-
-  .dropbtn:focus { outline: 2px solid rgba(255,255,255,0.12); outline-offset: 2px; }
-  .option:focus { outline: none; background: rgba(255,255,255,0.12); }
+.dropdown-calendar input[type="date"] {
+  width: 100%;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #aaa;
+}
 </style>
 
 <script>
-  (function () {
-    const selectors = document.querySelectorAll('.multi-selectors .selector');
-    const buyBtn = document.getElementById('buyBtn');
+(function(){
+  // Закрытие всех dropdown, кроме выбранного
+  function closeAllDropdowns(except=null){
+    document.querySelectorAll('.dropdown').forEach(d=>{
+      if(d!==except) d.style.display='none';
+    });
+    document.querySelectorAll('.dropdown-calendar').forEach(d=>{
+      if(d!==except) d.style.display='none';
+    });
+  }
 
-    selectors.forEach(sel => {
-      const btn = sel.querySelector('.dropbtn');
-      const list = sel.querySelector('.dropdown');
-      const options = list.querySelectorAll('.option');
+  // Кнопки SELECT TOUR и NUMBER OF QUESTS
+  const selectors = document.querySelectorAll('.multi-selectors .selector');
+  selectors.forEach(sel => {
+    const btn = sel.querySelector('.dropbtn');
+    const list = sel.querySelector('.dropdown');
+    if(!list) return;
 
-      function syncDropdownWidth() {
-        if (!btn || !list) return;
-        list.style.width = window.getComputedStyle(btn).width;
-      }
+    btn.addEventListener('click', e=>{
+      e.stopPropagation();
+      const opened = list.style.display==='block';
+      closeAllDropdowns(list);
+      list.style.display = opened ? 'none' : 'block';
+      list.style.width = window.getComputedStyle(btn).width;
+    });
 
-      btn.addEventListener('click', (e) => {
+    sel.querySelectorAll('.option').forEach(opt=>{
+      opt.addEventListener('click', e=>{
         e.stopPropagation();
-        closeAllDropdownsExcept(list);
-        const opened = list.style.display === 'block';
-        setDropdownState(list, btn, !opened);
-        if (!opened) syncDropdownWidth();
-      });
-
-      options.forEach(opt => {
-        opt.addEventListener('click', (e) => {
-          e.stopPropagation();
-          options.forEach(o => o.removeAttribute('aria-selected'));
-          opt.setAttribute('aria-selected', 'true');
-          sel.dataset.selected = opt.dataset.value;
-
-          const btnText = btn.querySelector('.btn-text');
-          if (btnText) btnText.textContent = opt.textContent;
-          else btn.textContent = opt.textContent;
-
-          setDropdownState(list, btn, false);
-        });
-
-        opt.addEventListener('keydown', (ev) => {
-          if (ev.key === 'Enter' || ev.key === ' ') {
-            ev.preventDefault();
-            opt.click();
-          }
-          if (ev.key === 'ArrowDown') {
-            ev.preventDefault();
-            const next = opt.nextElementSibling || options[0];
-            next.focus();
-          }
-          if (ev.key === 'ArrowUp') {
-            ev.preventDefault();
-            const prev = opt.previousElementSibling || options[options.length - 1];
-            prev.focus();
-          }
-        });
-      });
-
-      document.addEventListener('click', () => setDropdownState(list, btn, false));
-      window.addEventListener('resize', () => {
-        if (list.style.display === 'block') syncDropdownWidth();
+        sel.querySelectorAll('.option').forEach(o=>o.removeAttribute('aria-selected'));
+        opt.setAttribute('aria-selected','true');
+        sel.dataset.selected = opt.dataset.value;
+        btn.querySelector('.btn-text').textContent = opt.textContent;
+        list.style.display='none';
       });
     });
+  });
 
-    function closeAllDropdownsExcept(exceptList) {
-      document.querySelectorAll('.multi-selectors .dropdown').forEach(l => {
-        if (l !== exceptList) {
-          const btn = l.parentElement.querySelector('.dropbtn');
-          setDropdownState(l, btn, false);
-        }
-      });
-    }
+  // Календарь для SELECT DATE
+  const dateSel = document.querySelector('.selector[data-name="date"]');
+  const dateBtn = dateSel.querySelector('.dropbtn');
+  const calendar = dateSel.querySelector('.dropdown-calendar');
+  const dateInput = document.getElementById('calendar');
 
-    function setDropdownState(listEl, btnEl, open) {
-      if (!listEl || !btnEl) return;
-      listEl.style.display = open ? 'block' : 'none';
-      btnEl.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (open) {
-        listEl.style.width = window.getComputedStyle(btnEl).width;
-        const firstOption = listEl.querySelector('.option');
-        if (firstOption) firstOption.setAttribute('tabindex', '0');
-      }
-    }
+  dateBtn.addEventListener('click', e=>{
+    e.stopPropagation();
+    const opened = calendar.style.display==='block';
+    closeAllDropdowns(calendar);
+    calendar.style.display = opened ? 'none' : 'block';
+  });
 
-    buyBtn.addEventListener('click', () => {
-      const payload = {};
-      let ok = true;
+  dateInput.addEventListener('change', ()=>{
+    dateBtn.querySelector('.btn-text').textContent = dateInput.value;
+    calendar.style.display='none';
+  });
 
-      selectors.forEach(sel => {
-        const name = sel.dataset.name || sel.getAttribute('id') || 'unknown';
-        const val = sel.dataset.selected || null;
-        if (!val) {
-          ok = false;
-          const errBtn = sel.querySelector('.dropbtn');
-          if (errBtn) {
-            errBtn.classList.add('error');
-            setTimeout(()=> errBtn.classList.remove('error'), 1500);
-          }
-        } else {
-          payload[name] = val;
-        }
-      });
-
-      if (!ok) {
-        alert('Пожалуйста, выберите все опции.');
-        return;
-      }
-
-      const params = new URLSearchParams(payload).toString();
-      const buyUrl = '/buy?' + params;
-      window.location.href = buyUrl;
-    });
-  })();
+  // Клик вне всех dropdown закрывает их
+  document.addEventListener('click', ()=>closeAllDropdowns());
+})();
 </script>
