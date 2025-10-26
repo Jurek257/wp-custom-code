@@ -1,0 +1,46 @@
+<!-- Контейнер с картинкой и текстом -->
+<div class="img-box">
+  <img src="http://yurii.free.nf/wp-content/uploads/2025/09/Rectangle-5.png" alt="Описание изображения">
+  <div class="text-overlay">
+    <h3>Заголовок</h3>
+    <p>Описание или подпись</p>
+  </div>
+</div>
+
+<style>
+.img-box {
+  position: relative;      /* чтобы текст позиционировался относительно контейнера */
+  width: 100%;
+  max-width: 800px;        /* можно убрать или поменять */
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.img-box img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;       /* картинка не искажается */
+}
+
+/* Абсолютное позиционирование текста */
+.text-overlay {
+  position: absolute;
+  bottom: 16px;            /* отступ снизу */
+  left: 16px;              /* отступ слева */
+  background: rgba(255,255,255,1); /* светлый полупрозрачный фон */
+  color: #000;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+
+.text-overlay h3 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+}
+
+.text-overlay p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+</style>

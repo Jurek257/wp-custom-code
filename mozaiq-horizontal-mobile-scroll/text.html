@@ -1,0 +1,210 @@
+<!-- BEGIN: Горизонтально-скроллируемая секция с оверлеем -->
+<div class="two-col-scroll-widget">
+  <div class="two-col-inner">
+    <!-- ЛЕВАЯ КОЛОНКА: две картинки — сверху и снизу -->
+    <div class="col left-col">
+      <div class="stack">
+        <div class="img-box">
+          <img src="http://yurii.free.nf/wp-content/uploads/2025/09/Rectangle-6.png" alt="Левое верхнее">
+          <div class="text-overlay">
+            <h3>Five-star hotel room</h3>
+          </div>
+        </div>
+        <div class="img-box">
+          <img src="http://yurii.free.nf/wp-content/uploads/2025/09/Rectangle-4.png" alt="Левое нижнее">
+          <div class="text-overlay">
+            <h3>Breakfast and lunch</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ПРАВАЯ КОЛОНКА: одно большое изображение -->
+    <div class="col right-col">
+      <div class="img-box">
+        <img src="http://yurii.free.nf/wp-content/uploads/2025/09/Rectangle-5.png" alt="Правое">
+        <div class="text-overlay">
+          <h3>Breakfast and lunch</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ========== VARIABLES ========== */
+  :root {
+    --widget-height: 480px;
+    /* фиксированная высота виджета */
+    --my-gap: 16px !important;
+    /* gap между картинками и колонками */
+    --overlay-padding: 10px 14px;
+    --overlay-radius: 6px;
+    --overlay-bg: rgba(255, 255, 255, 0.95);
+    /* чуть прозрачнее, но читаемо */
+  }
+
+  /* ========== BASE ========== */
+  .two-col-scroll-widget {
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+
+    min-width: 320px;
+    min-height: 308px;
+  }
+
+  .two-col-inner {
+    display: flex;
+    gap: var(--my-gap);
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+    height: var(--widget-height);
+    box-sizing: border-box;
+    flex-wrap: nowrap;
+  }
+
+  /* Общие правила для колонок */
+  .col {
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Десктоп: две колонки по 50% */
+  .left-col,
+  .right-col {
+    flex: 1 1 50%;
+  }
+
+  /* ========== LEFT STACK ========== */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--my-gap);
+    height: 100%;
+  }
+
+  /* ========== IMG BOX — ВСЕ КАРТИНКИ ========== */
+  .img-box {
+    min-height: 229px;
+    position: relative;
+    width: 100%;
+    /* ширина = ширине родителя */
+    height: 100%;
+    /* высота = высоте родителя */
+    overflow: hidden;
+    border-radius: var(--overlay-radius);
+    background: #eee;
+    flex: 1 1 auto;
+    /* для десктопа: делим место равномерно */
+  }
+
+  .img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ========== TEXT OVERLAY ========== */
+  .text-overlay {
+    position: absolute;
+    left: var(--my-gap);
+    bottom: var(--my-gap);
+    background: none;
+    /* убираем фон */
+    padding: 0;
+    /* убираем паддинг */
+    border-radius: 0;
+    /* убираем скругления */
+    color: #fff;
+    /* белый текст на фото */
+    z-index: 10;
+    max-width: 100%;
+  }
+
+  .text-overlay h3 {
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    /* шрифт */
+    font-weight: 700;
+    /* Bold */
+    font-size: 20px;
+    /* размер */
+    margin: 0;
+  }
+
+  /* ========== RIGHT COLUMN IMAGE ========== */
+  .right-col .img-box {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ========== RESPONSIVE: HORIZONTAL SCROLL ON MOBILE ========== */
+  @media (max-width: 768px) {
+    .two-col-inner {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      gap: calc(var(--my-gap) * 0.6);
+      padding-bottom: 6px;
+    }
+
+    .left-col,
+    .right-col {
+      flex: 0 0 100vw;
+      max-width: 100vw;
+      min-width: 100vw;
+    }
+
+    .stack {
+      height: 100%;
+    }
+
+    .img-box {
+      flex: none;
+      width: 100%;
+      height: calc((100% - var(--my-gap)) / 2);
+      /* левая колонка: 2 картинки */
+    }
+
+    .right-col .img-box {
+      height: 100%;
+      /* правая картинка растягивается на всю высоту родителя */
+    }
+
+    .text-overlay {
+      left: calc(var(--my-gap)/2);
+      bottom: calc(var(--my-gap)/2);
+      padding: 8px 10px;
+    }
+
+    /* Стили скроллбара */
+    .two-col-inner::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .two-col-inner::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 999px;
+    }
+
+    .two-col-inner {
+      -ms-overflow-style: auto;
+      scrollbar-width: thin;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .text-overlay h3 {
+      font-size: 0.95rem;
+    }
+
+    .two-col-scroll-widget {
+       /* transform: scale(0.8); */
+    }
+  }
+</style>

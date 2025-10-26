@@ -1,0 +1,152 @@
+<!-- BEGIN: Горизонтально-скроллируемая секция с оверлеем -->
+<div class="two-col-scroll-widget">
+  <div class="two-col-inner">
+    <!-- ЛЕВАЯ КОЛОНКА: две картинки — сверху и снизу -->
+    <div class="col left-col">
+      <div class="stack">
+        <div class="img-box">
+          <img src="http://yurii.free.nf/wp-content/uploads/2025/09/Rectangle-6.png" alt="Левое верхнее">
+          <div class="text-overlay">
+            <h3>Левый верхний</h3>
+          </div>
+        </div>
+        <div class="img-box">
+          <img src="http://yurii.free.nf/wp-content/uploads/2025/09/Rectangle-4.png" alt="Левое нижнее">
+          <div class="text-overlay">
+            <h3>Левый нижний</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ПРАВАЯ КОЛОНКА: одно большое изображение -->
+    <div class="col right-col">
+      <div class="img-box">
+        <img src="http://yurii.free.nf/wp-content/uploads/2025/09/Rectangle-5.png" alt="Правое">
+        <div class="text-overlay">
+          <h3>Правая</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ========== VARIABLES ========== */
+:root {
+  --widget-height: 480px; /* фиксированная высота виджета */
+  --gap: 16px;            /* gap между картинками и колонками */
+  --overlay-padding: 10px 14px;
+  --overlay-radius: 6px;
+  --overlay-bg: rgba(255,255,255,1); /* непрозрачный светлый фон для читаемого текста */
+}
+
+/* ========== BASE ========== */
+.two-col-scroll-widget {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.two-col-inner {
+  display: flex;
+  gap: var(--gap);
+  align-items: stretch;
+  width: 100%;
+  height: var(--widget-height);
+  box-sizing: border-box;
+}
+
+.col {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Десктоп: две колонки по 50% */
+.left-col, .right-col {
+  flex: 1 1 50%;
+}
+
+/* ========== LEFT STACK ========== */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  height: 100%;
+}
+
+.img-box {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  flex: 1 1 calc((100% - var(--gap)) / 2);
+  border-radius: var(--overlay-radius);
+}
+
+.img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ========== TEXT OVERLAY ========== */
+.text-overlay {
+  position: absolute;
+  left: var(--gap);
+  bottom: var(--gap);
+  background: var(--overlay-bg);
+  color: #000;
+  padding: var(--overlay-padding);
+  border-radius: var(--overlay-radius);
+  z-index: 10;
+}
+
+.text-overlay h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* ========== RIGHT COLUMN IMAGE ========== */
+.right-col .img-box {
+  height: 100%;
+}
+
+/* ========== RESPONSIVE: HORIZONTAL SCROLL ON MOBILE ========== */
+@media (max-width: 768px) {
+  .two-col-inner {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    flex-wrap: nowrap; /* держим колонки в строке */
+    height: var(--widget-height);
+  }
+
+  /* Задаём ширины колонок для эффекта "половины правой картинки" */
+  .left-col {
+    flex: 0 0 50vw;
+    max-width: 50vw;
+  }
+  .right-col {
+    flex: 0 0 100vw;
+    max-width: 100vw;
+  }
+
+  /* Левая колонка: сохраняем пропорции для двух картинок */
+  .stack { height: 100%; }
+  .img-box { flex: none; height: calc((100% - var(--gap)) / 2); }
+
+  /* Правая картинка */
+  .right-col .img-box { height: 100%; }
+
+  /* Overlay — чуть меньше отступы на мобильных */
+  .text-overlay {
+    left: calc(var(--gap)/2);
+    bottom: calc(var(--gap)/2);
+  }
+}
+
+/* Очень маленькие экраны — чуть меньше шрифт */
+@media (max-width: 380px) {
+  .text-overlay h3 { font-size: 0.95rem; }
+}
+</style>
