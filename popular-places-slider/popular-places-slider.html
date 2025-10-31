@@ -1,4 +1,6 @@
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 
@@ -7,25 +9,33 @@
 
 <div class="places-widget" id="placesWidget">
     <div class="pw-row">
-        <div class="pw-left" id="leftSlot">
-            <img id="leftImg" src="/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-7.webp" alt="left">
+        <!-- Левая половина: главное изображение + текст -->
+        <div class="pw-left-center">
+            <div class="pw-left">
+                <img id="leftImg" src="assets/Rectangle-7.webp" alt="left">
+            </div>
+            <div class="pw-center">
+                <div class="pw-title" id="placeTitle">Eiffel Tower</div>
+                <div class="pw-desc" id="placeDesc">
+                    The Eiffel Tower is a famous iron observation tower in the heart of Paris, symbolizing the city and
+                    France.
+                </div>
+                <div class="pw-controls">
+                    <button class="next-btn" id="nextBtn">NEXT PLACE<svg xmlns="http://www.w3.org/2000/svg" width="152"
+                            height="30" viewBox="0 0 152 30" fill="none">
+                            <path
+                                d="M151.414 16.1422C152.195 15.3612 152.195 14.0949 151.414 13.3138L138.686 0.585892C137.905 -0.195157 136.639 -0.195157 135.858 0.585892C135.077 1.36694 135.077 2.63327 135.858 3.41432L147.172 14.728L135.858 26.0417C135.077 26.8228 135.077 28.0891 135.858 28.8702C136.639 29.6512 137.905 29.6512 138.686 28.8702L151.414 16.1422ZM0 14.728V16.728H150V14.728V12.728H0V14.728Z"
+                                fill="#FFD700" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <div class="pw-center">
-            <div class="pw-title" id="placeTitle">Eiffel Tower</div>
-            <div class="pw-desc" id="placeDesc">
-                The Eiffel Tower is a famous iron observation tower in the heart of Paris, symbolizing the city and
-                France.
-            </div>
-            <div class="pw-controls">
-                <button class="next-btn" id="nextBtn">NEXT PLACE</button>
-                <div class="arrow" aria-hidden="true"></div>
-            </div>
-        </div>
-
+        <!-- Правая половина: два изображения по горизонтали -->
         <div class="pw-right">
-            <div class="mini" id="rightTop"><img src="/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-8.webp" alt="r1"></div>
-            <div class="mini" id="rightBottom"><img src="/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-9.webp" alt="r2"></div>
+            <div class="mini" id="rightTop"><img src="assets/Rectangle-8.webp" alt="r1"></div>
+            <div class="mini" id="rightBottom"><img src="assets/Rectangle-9.webp" alt="r2"></div>
         </div>
     </div>
 </div>
@@ -33,7 +43,6 @@
 <style>
     .places-widget {
         max-width: 1200px;
-        margin: 20px auto;
         padding: 18px;
         background: #191913;
         color: #eee;
@@ -44,17 +53,32 @@
     .pw-row {
         display: flex;
         gap: 20px;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
         position: relative;
     }
 
+    /* Новый контейнер: левая половина — картинка слева, текст справа */
+    .pw-left-center {
+        flex: 0 0 60%;
+        /* левая половина */
+        display: flex;
+        gap: 18px;
+        align-items: stretch;
+        min-width: 0;
+    }
+
+    /* Главное изображение внутри левой половины */
     .pw-left {
-        flex: 0 0 48%;
+        flex: 0 0 45%;
+        /* ширина картинки внутри левой половины */
         border-radius: 10px;
         overflow: hidden;
-        height: 360px;
         background: #222;
+        height: 388px;
+        /* высота главного изображения */
+        display: block;
+        min-width: 0;
     }
 
     .pw-left img {
@@ -64,54 +88,79 @@
         display: block;
     }
 
+    /* Текст и кнопка — справа от картинки в левой половине */
     .pw-center {
-        flex: 0 0 26%;
+        flex: 1 1 54%;
         color: #ddd;
         font-family: Georgia, "Times New Roman", serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        padding-right: 8px;
         text-align: left;
     }
 
     .pw-title {
         font-family: 'Cinzel', serif;
-        /* шрифт Cinzel Regular */
         font-size: 32px;
-        /* размер текста */
-        letter-spacing: normal;
-        /* стандартные пробелы между буквами */
         color: #f8f1d0;
-        /* оставляем текущий цвет, если нужно */
     }
 
     .pw-desc {
         font-family: 'Open Sans', sans-serif;
-        /* шрифт Open Sans */
         font-weight: 300;
-        /* Light */
         font-size: 24px;
-        /* размер текста */
-        line-height: normal;
-        /* стандартная высота строки */
-        letter-spacing: normal;
-        /* стандартные пробелы */
         color: #cfcfcf;
-        /* оставляем текущий цвет */
+        line-height: 1.25;
     }
 
-
-    .pw-right {
-        flex: 0 0 20%;
+    .pw-controls {
         display: flex;
-        flex-direction: column;
+        align-items: center;
         gap: 12px;
-        height: 360px;
+        margin-top: 8px;
     }
 
+    .next-btn {
+        background: transparent;
+        border: 1px solid #ffd800;
+        color: #ffd800;
+        font-weight: 700;
+        letter-spacing: 1px;
+        cursor: pointer;
+        padding: 6px 10px;
+        font-size: 16px;
+        border-radius: 4px;
+    }
+
+    /* Правая половина: два мини-изображения по горизонтали */
+    /* ПРАВАЯ ПОЛОВИНА: фиксируем её как ровно 50% от виджета,
+   и делим её на 2 мини-изображения с учётом gap */
+    .pw-right {
+        flex: 0 0 38%;
+        /* правая половина = 50% всего виджета */
+        display: flex;
+        gap: 12px;
+        /* оставляем текущий gap */
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+    }
+
+    /* Каждое мини-изображение занимает половину правой половины,
+   вычитаем половину gap, чтобы суммарно было ровно 50% */
     .pw-right .mini {
-        flex: 1;
+        flex: 0 0 calc((100% - 12px) / 2);
+        /* (правый контейнер шириной 100%) */
+        height: 320px;
+        /* чуть меньше высоты главного */
         border-radius: 10px;
         overflow: hidden;
         background: #222;
+        box-sizing: border-box;
     }
+
 
     .pw-right img {
         width: 100%;
@@ -120,27 +169,7 @@
         display: block;
     }
 
-    .pw-controls {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-top: 14px;
-    }
-
-    .next-btn {
-        background: transparent;
-        border: none;
-        color: #ffd800;
-        font-weight: 700;
-        letter-spacing: 1px;
-        cursor: pointer;
-        padding: 6px 10px;
-        font-size: 16px;
-    }
-
-    /* =======================
-     MOBILE VERSION 
-     ======================= */
+    /* MOBILE */
     @media(max-width:768px) {
         .pw-row {
             flex-direction: column;
@@ -148,19 +177,41 @@
             text-align: center;
         }
 
+        .pw-left-center {
+            flex: 0 0 100%;
+            flex-direction: column;
+            /* картинка сверху, текст под ней */
+            gap: 12px;
+            width: 100%;
+        }
+
         .pw-left {
             width: 100%;
             height: 300px;
+            flex: 0 0 auto;
+        }
+
+        .pw-left img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .pw-center {
             width: 100%;
             padding: 10px 0;
+            justify-content: flex-start;
         }
 
         .pw-right {
             display: none !important;
-            /* скрываем мини-изображения */
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .pw-right .mini {
+            display: none !important;
         }
 
         .pw-title {
@@ -175,117 +226,117 @@
     }
 </style>
 
+
 <!-- GSAP CDN -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
 
 <script>
-(function () {
-    const places = [
-        { title: "Eiffel Tower", desc: "The Eiffel Tower is a famous iron observation tower in the heart of Paris, symbolizing the city and France.", left: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-7.webp", r1: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-8.webp", r2: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-9.webp" },
-        { title: "Water Ride", desc: "Exciting river-ride attraction with big splashes — great for families.", left: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-8.webp", r1: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-9.webp", r2: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-7.webp" },
-        { title: "Garden Statue", desc: "Calm gardens with statues and a Ferris wheel in the background.", left: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-9.webp", r1: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-7.webp", r2: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-8.webp" },
-    ];
+    (function () {
+        const places = [
+            { title: "Eiffel Tower", desc: "The Eiffel Tower is a famous iron observation tower in the heart of Paris, symbolizing the city and France.", left: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-7.webp", r1: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-8.webp", r2: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-9.webp" },
+            { title: "Water Ride", desc: "Exciting river-ride attraction with big splashes — great for families.", left: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-8.webp", r1: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-9.webp", r2: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-7.webp" },
+            { title: "Garden Statue", desc: "Calm gardens with statues and a Ferris wheel in the background.", left: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-9.webp", r1: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-7.webp", r2: "/home/yurii/custom-widgets-wp/popular-places-slider/assets/Rectangle-8.webp" },
+        ];
 
-    let idx = 0;
-    const leftImg = document.getElementById('leftImg');
-    const titleEl = document.getElementById('placeTitle');
-    const descEl = document.getElementById('placeDesc');
-    const nextBtn = document.getElementById('nextBtn');
-    const rightTop = document.querySelector('#rightTop img');
-    const rightBottom = document.querySelector('#rightBottom img');
+        let idx = 0;
+        const leftImg = document.getElementById('leftImg');
+        const titleEl = document.getElementById('placeTitle');
+        const descEl = document.getElementById('placeDesc');
+        const nextBtn = document.getElementById('nextBtn');
+        const rightTop = document.querySelector('#rightTop img');
+        const rightBottom = document.querySelector('#rightBottom img');
 
-    // Предзагрузка изображений
-    function preload(url) { const i = new Image(); i.src = url; }
-    places.forEach(p => { preload(p.left); preload(p.r1); preload(p.r2); });
+        // Предзагрузка изображений
+        function preload(url) { const i = new Image(); i.src = url; }
+        places.forEach(p => { preload(p.left); preload(p.r1); preload(p.r2); });
 
-    function setLeftContent(i) {
-        const p = places[i];
-        leftImg.src = p.left;
-        titleEl.textContent = p.title;
-        descEl.textContent = p.desc;
-    }
-
-    function setRightImages(i) {
-        const p = places[i];
-        if (rightTop && rightBottom) {
-            rightTop.src = p.r1;
-            rightBottom.src = p.r2;
+        function setLeftContent(i) {
+            const p = places[i];
+            leftImg.src = p.left;
+            titleEl.textContent = p.title;
+            descEl.textContent = p.desc;
         }
-    }
 
-    // Инициализация
-    /* setLeftContent(0); */
-    setRightImages(0);
+        function setRightImages(i) {
+            const p = places[i];
+            if (rightTop && rightBottom) {
+                rightTop.src = p.r1;
+                rightBottom.src = p.r2;
+            }
+        }
 
-    function animateToNext(onComplete) {
-        const nextIndex = (idx + 1) % places.length;
-        const isMobile = window.innerWidth <= 768;
+        // Инициализация
+        setLeftContent(0);
+        setRightImages(0);
 
-        if (isMobile) {
-            gsap.to([leftImg, titleEl, descEl], {
-                opacity: 0,
-                duration: 0.3,
+        function animateToNext(onComplete) {
+            const nextIndex = (idx + 1) % places.length;
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+                gsap.to([leftImg, titleEl, descEl], {
+                    opacity: 0,
+                    duration: 0.3,
+                    onComplete: () => {
+                        setLeftContent(nextIndex);
+                        setRightImages(nextIndex);
+                        gsap.to([leftImg, titleEl, descEl], { opacity: 1, duration: 0.4 });
+                        idx = nextIndex;
+                        if (onComplete) onComplete();
+                    }
+                });
+                return;
+            }
+
+            // Сразу обновляем правые миниатюры
+            setRightImages(nextIndex);
+
+            // Клонируем верхнюю правую миниатюру
+            const srcImg = rightTop;
+            const srcRect = srcImg.getBoundingClientRect();
+            const targetRect = leftImg.getBoundingClientRect();
+
+            const clone = srcImg.cloneNode();
+            document.body.appendChild(clone);
+            Object.assign(clone.style, {
+                position: 'absolute',
+                left: srcRect.left + 'px',
+                top: srcRect.top + 'px',
+                width: srcRect.width + 'px',
+                height: srcRect.height + 'px',
+                objectFit: 'cover',
+                zIndex: 9999,
+                borderRadius: '10px'
+            });
+
+            leftImg.style.opacity = 0; // скрываем левое изображение до конца анимации
+
+            // Анимация клона
+            gsap.to(clone, {
+                duration: 0.6,
+                ease: "power2.inOut",
+                left: targetRect.left,
+                top: targetRect.top,
+                width: targetRect.width,
+                height: targetRect.height,
                 onComplete: () => {
-                    setLeftContent(nextIndex);
-                    setRightImages(nextIndex);
-                    gsap.to([leftImg, titleEl, descEl], { opacity: 1, duration: 0.4 });
+                    // Обновляем левое изображение и текст только один раз
+                    /* setLeftContent(nextIndex); */
+                    leftImg.style.opacity = 1;
+
                     idx = nextIndex;
+                    clone.remove();
+
                     if (onComplete) onComplete();
                 }
             });
-            return;
         }
 
-        // Сразу обновляем правые миниатюры
-        setRightImages(nextIndex);
-
-        // Клонируем верхнюю правую миниатюру
-        const srcImg = rightTop;
-        const srcRect = srcImg.getBoundingClientRect();
-        const targetRect = leftImg.getBoundingClientRect();
-
-        const clone = srcImg.cloneNode();
-        document.body.appendChild(clone);
-        Object.assign(clone.style, {
-            position: 'absolute',
-            left: srcRect.left + 'px',
-            top: srcRect.top + 'px',
-            width: srcRect.width + 'px',
-            height: srcRect.height + 'px',
-            objectFit: 'cover',
-            zIndex: 9999,
-            borderRadius: '10px'
+        // Кнопка "NEXT PLACE"
+        nextBtn.addEventListener('click', () => {
+            if (nextBtn.disabled) return;
+            nextBtn.disabled = true;
+            animateToNext(() => nextBtn.disabled = false);
         });
-
-        leftImg.style.opacity = 0; // скрываем левое изображение до конца анимации
-
-        // Анимация клона
-        gsap.to(clone, {
-            duration: 0.6,
-            ease: "power2.inOut",
-            left: targetRect.left,
-            top: targetRect.top,
-            width: targetRect.width,
-            height: targetRect.height,
-            onComplete: () => {
-                // Обновляем левое изображение и текст только один раз
-                /* setLeftContent(nextIndex); */
-                leftImg.style.opacity = 1;
-
-                idx = nextIndex;
-                clone.remove();
-
-                if (onComplete) onComplete();
-            }
-        });
-    }
-
-    // Кнопка "NEXT PLACE"
-    nextBtn.addEventListener('click', () => {
-        if (nextBtn.disabled) return;
-        nextBtn.disabled = true;
-        animateToNext(() => nextBtn.disabled = false);
-    });
-})();
+    })();
 </script>
-

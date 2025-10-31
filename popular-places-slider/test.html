@@ -1,0 +1,558 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+
+
+
+<div class="places-widget" id="placesWidget">
+    <div class="pw-row">
+        <!-- Левая половина: главное изображение + текст -->
+        <div class="pw-left-center">
+            <div class="pw-left">
+                <img id="leftImg" src="assets/Rectangle-7.webp" alt="left">
+            </div>
+            <div class="pw-center">
+                <div class="pw-title" id="placeTitle">Eiffel Tower</div>
+                <div class="pw-desc" id="placeDesc">
+                    The Eiffel Tower is a famous iron observation tower in the heart of Paris, symbolizing the city and
+                    France.
+                </div>
+                <div class="pw-controls">
+                    <button class="next-btn" id="nextBtn">
+                        <span class="next-inner">
+                            <span class="next-text">NEXT PLACE</span>
+                            <svg class="svg-desktop" xmlns="http://www.w3.org/2000/svg" width="152" height="30"
+                                viewBox="0 0 152 30" fill="none">
+                                <path
+                                    d="M151.414 16.1422C152.195 15.3612 152.195 14.0949 151.414 13.3138L138.686 0.585892C137.905 -0.195157 136.639 -0.195157 135.858 0.585892C135.077 1.36694 135.077 2.63327 135.858 3.41432L147.172 14.728L135.858 26.0417C135.077 26.8228 135.077 28.0891 135.858 28.8702C136.639 29.6512 137.905 29.6512 138.686 28.8702L151.414 16.1422ZM0 14.728V16.728H150V14.728V12.728H0V14.728Z"
+                                    fill="#FFD700" />
+                            </svg>
+
+                            <svg class="svg-mobile" xmlns="http://www.w3.org/2000/svg" width="151" height="15"
+                                viewBox="0 0 151 15" fill="none">
+                                <path
+                                    d="M150.707 8.07088C151.098 7.68035 151.098 7.04719 150.707 6.65666L144.343 0.292702C143.953 -0.0978227 143.319 -0.0978227 142.929 0.292702C142.538 0.683226 142.538 1.31639 142.929 1.70692L148.586 7.36377L142.929 13.0206C142.538 13.4111 142.538 14.0443 142.929 14.4348C143.319 14.8254 143.953 14.8254 144.343 14.4348L150.707 8.07088ZM0 7.36377V8.36377H150V7.36377V6.36377H0V7.36377Z"
+                                    fill="#FFD700" />
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая половина: два изображения по горизонтали -->
+        <div class="pw-right">
+            <div class="mini" id="rightTop"><img src="assets/Rectangle-8.webp" alt="r1"></div>
+            <div class="mini" id="rightBottom"><img src="assets/Rectangle-9.webp" alt="r2"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .places-widget {
+        max-width: 1200px;
+        padding: 18px;
+        background: #191913;
+        color: #eee;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .pw-row {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    /* Новый контейнер: левая половина — картинка слева, текст справа */
+    .pw-left-center {
+        flex: 0 0 60%;
+        /* левая половина */
+        display: flex;
+        gap: 18px;
+        align-items: stretch;
+        min-width: 0;
+    }
+
+    /* Главное изображение внутри левой половины */
+    .pw-left {
+        flex: 0 0 45%;
+        /* ширина картинки внутри левой половины */
+        border-radius: 10px;
+        overflow: hidden;
+        background: #191913;
+        height: 388px;
+        /* высота главного изображения */
+        display: block;
+        min-width: 0;
+    }
+
+    .pw-left img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* Текст и кнопка — справа от картинки в левой половине */
+    .pw-center {
+        flex: 1 1 54%;
+        color: #ddd;
+        font-family: Georgia, "Times New Roman", serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 388px;
+        padding-right: 8px;
+        text-align: left;
+    }
+
+    .pw-title {
+        font-family: 'Cinzel', serif;
+        font-size: 32px;
+        color: #f8f1d0;
+    }
+
+    .pw-desc {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+        font-size: 24px;
+        color: #cfcfcf;
+        line-height: 1.25;
+    }
+
+    .pw-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 8px;
+    }
+
+    .next-btn {
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: wrap;
+        background: transparent;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+        font-size: 24px;
+        color: #ffd800;
+        font-weight: 700;
+        letter-spacing: 1px;
+        cursor: pointer;
+        padding: 6px 10px;
+        font-size: 16px;
+        border-radius: 4px;
+        gap: 10px;
+        overflow: hidden;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+        /* убирает синий/серый highlight на мобильных */
+    }
+
+    .next-btn:hover {
+        background: transparent;
+        /* чтобы при hover не появлялся синий */
+        color: #ffd800;
+        /* если хочешь оставить текст без изменения */
+    }
+
+    .next-btn:focus {
+        outline: none;
+        /* убираем при фокусе через Tab или клик */
+        box-shadow: none;
+        /* если браузер ставит тень */
+    }
+
+    .next-inner {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        /* разрешаем перенос текста */
+        overflow: hidden;
+        /* скрываем выход за границы кнопки */
+    }
+
+    .next-btn .next-text {
+        white-space: normal;
+        display: inline-block;
+        /* гарантируем, что текст считается одним элементом в flex */
+    }
+
+    .svg-desktop {
+        flex: 0 0 auto;
+        display: block;
+    }
+
+    .svg-mobile {
+        display: none;
+    }
+
+    /* Правая половина: два мини-изображения по горизонтали */
+    /* ПРАВАЯ ПОЛОВИНА: фиксируем её как ровно 50% от виджета,
+   и делим её на 2 мини-изображения с учётом gap */
+    .pw-right {
+        flex: 0 0 38%;
+        /* правая половина = 50% всего виджета */
+        display: flex;
+        gap: 12px;
+        /* оставляем текущий gap */
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+    }
+
+    /* Каждое мини-изображение занимает половину правой половины,
+   вычитаем половину gap, чтобы суммарно было ровно 50% */
+    .pw-right .mini {
+        flex: 0 0 calc((100% - 12px) / 2);
+        /* (правый контейнер шириной 100%) */
+        height: 320px;
+        /* чуть меньше высоты главного */
+        border-radius: 10px;
+        overflow: hidden;
+        background: #191913;
+        box-sizing: border-box;
+    }
+
+
+    .pw-right img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* MOBILE */
+    @media (max-width:400px) {
+        .pw-right {
+            display: none !important;
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+        }
+
+        /* на всякий случай — миниы тоже скрыть */
+        .pw-right .mini {
+            display: none !important;
+        }
+
+        .pw-left-center {
+            flex: 0 0 100%;
+            flex-direction: row;
+            /* можно row, картинка слева, текст справа */
+            gap: 12px;
+            width: 100%;
+        }
+
+        .pw-left {
+            width: 45%;
+            height: 300px;
+        }
+
+        .pw-center {
+            flex: 1 1 54%;
+            text-align: right;
+            height: 300px;
+            min-width: none;
+            padding-right: 18px;
+        }
+
+        .pw-title {
+            text-align: right;
+            font-size: 24px;
+        }
+
+        .pw-desc {
+            text-align: right;
+            font-size: 20px;
+        }
+
+        .svg-desktop {
+            display: none;
+        }
+
+        .svg-mobile {
+            display: inline-block;
+        }
+    }
+</style>
+
+
+<!-- GSAP CDN -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+
+<script>
+(function () {
+    const places = [
+        { title: "Eiffel Tower", desc: "The Eiffel Tower is a famous iron observation tower in the heart of Paris, symbolizing the city and France.", left: "http://yurii.free.nf/wp-content/uploads/2025/10/Rectangle-7.webp", r1: "http://yurii.free.nf/wp-content/uploads/2025/10/Rectangle-8.webp", r2: "http://yurii.free.nf/wp-content/uploads/2025/10/Rectangle-9.webp" },
+        { title: "Water Ride", desc: "Exciting river-ride attraction with big splashes — great for families.", left: "http://yurii.free.nf/wp-content/uploads/2025/10/Rectangle-8.webp", r1: "http://yurii.free.nf/wp-content/uploads/2025/10/Rectangle-9.webp", r2: "http://yurii.free.nf/wp-content/uploads/2025/10/Rectangle-7.webp" },
+        { title: "Garden Statue", desc: "Calm gardens with statues and a Ferris wheel in the background.", left: "http://yurii.free.nf/wp-content/uploads/2025/10/Rectangle-9.webp", r1: "http://yurii.free.nf/wp-content/uploads/2025/10/Rectangle-7.webp", r2: "http://yurii.free.nf/wp-content/uploads/2025/10/Rectangle-8.webp" },
+    ];
+
+    let idx = 0;
+    const leftImg = document.getElementById('leftImg');
+    const titleEl = document.getElementById('placeTitle');
+    const descEl = document.getElementById('placeDesc');
+    const nextBtn = document.getElementById('nextBtn');
+    const rightTop = document.querySelector('#rightTop img');
+    const rightBottom = document.querySelector('#rightBottom img');
+
+    // Предзагрузка изображений
+    function preload(url) { const i = new Image(); i.src = url; }
+    places.forEach(p => { preload(p.left); preload(p.r1); preload(p.r2); });
+
+    function setLeftContent(i) {
+        const p = places[i];
+        leftImg.src = p.left;
+        titleEl.textContent = p.title;
+        descEl.textContent = p.desc;
+    }
+
+    function setRightImages(i) {
+        const p = places[i];
+        if (rightTop && rightBottom) {
+            rightTop.src = p.r1;
+            rightBottom.src = p.r2;
+        }
+    }
+
+    // Инициализация
+    setLeftContent(0);
+    setRightImages(0);
+
+    // Утилита: обёртка gsap.to в Promise
+    function tweenToPromise(targets, vars) {
+        return new Promise(resolve => {
+            const userOnComplete = vars.onComplete;
+            vars.onComplete = () => {
+                if (typeof userOnComplete === 'function') userOnComplete();
+                resolve();
+            };
+            gsap.to(targets, vars);
+        });
+    }
+
+    // Новая версия animateRightImages: плавно скрываем правые, меняем src, затем показываем синхронно с левым появлением.
+    async function animateRightImages(nextIndex) {
+        if (!rightTop || !rightBottom) return; // если нет мини-картинок (mobile / скрыты) — ничего не делаем
+
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+        // Получаем текущие DOM-элементы и их координаты
+        const topImg = rightTop;
+        const bottomImg = rightBottom;
+        const topRect = topImg.getBoundingClientRect();
+        const bottomRect = bottomImg.getBoundingClientRect();
+
+        // 1) Сначала плавно исчезаем реальные мини-изображения (чтобы не было "прыжка" при клонировании)
+        const fadeOutDuration = 0.35;
+        await Promise.all([
+            tweenToPromise(topImg, { opacity: 0, duration: fadeOutDuration, ease: "power1.out" }),
+            tweenToPromise(bottomImg, { opacity: 0, duration: fadeOutDuration, ease: "power1.out" })
+        ]);
+
+        // 2) Создаём клоны старых мини-изображений (они видимы и будут лететь/меняться)
+        const cloneTop = topImg.cloneNode();
+        const cloneBottom = bottomImg.cloneNode();
+
+        Object.assign(cloneTop.style, {
+            position: 'absolute',
+            left: (topRect.left + scrollLeft) + 'px',
+            top: (topRect.top + scrollTop) + 'px',
+            width: topRect.width + 'px',
+            height: topRect.height + 'px',
+            objectFit: 'cover',
+            zIndex: 9999,
+            borderRadius: '10px',
+            pointerEvents: 'none'
+        });
+
+        Object.assign(cloneBottom.style, {
+            position: 'absolute',
+            left: (bottomRect.left + scrollLeft) + 'px',
+            top: (bottomRect.top + scrollTop) + 'px',
+            width: bottomRect.width + 'px',
+            height: bottomRect.height + 'px',
+            objectFit: 'cover',
+            zIndex: 9999,
+            borderRadius: '10px',
+            pointerEvents: 'none'
+        });
+
+        document.body.appendChild(cloneTop);
+        document.body.appendChild(cloneBottom);
+
+        // 3) Обновляем реальные мини-изображения (они пока прозрачные)
+        setRightImages(nextIndex);
+        // гарантируем, что новые изображения будут сразу с opacity: 0 (чтобы безопасно анимировать)
+        rightTop.style.opacity = 0;
+        rightBottom.style.opacity = 0;
+
+        // 4) Получаем новые координаты (куда должны прийти клоны)
+        const newTopRect = rightTop.getBoundingClientRect();
+        const newBottomRect = rightBottom.getBoundingClientRect();
+
+        // 5) Анимируем клоны в новые позиции (и параллельно можно подождать)
+        const cloneDuration = 0.6;
+        await Promise.all([
+            tweenToPromise(cloneTop, {
+                left: newTopRect.left + scrollLeft + 'px',
+                top: newTopRect.top + scrollTop + 'px',
+                width: newTopRect.width + 'px',
+                height: newTopRect.height + 'px',
+                duration: cloneDuration,
+                ease: "power2.inOut"
+            }),
+            tweenToPromise(cloneBottom, {
+                left: newBottomRect.left + scrollLeft + 'px',
+                top: newBottomRect.top + scrollTop + 'px',
+                width: newBottomRect.width + 'px',
+                height: newBottomRect.height + 'px',
+                duration: cloneDuration,
+                ease: "power2.inOut"
+            })
+        ]);
+
+        // 6) После того как клоны прибыли — показываем реальные мини (плавное появление), совпадающее по времени с левым появлением (0.35s)
+        await Promise.all([
+            tweenToPromise(rightTop, { opacity: 1, duration: fadeOutDuration, ease: "power1.in" }),
+            tweenToPromise(rightBottom, { opacity: 1, duration: fadeOutDuration, ease: "power1.in" })
+        ]);
+
+        // 7) Удаляем клоны
+        cloneTop.remove();
+        cloneBottom.remove();
+    }
+
+    async function animateToNext(onComplete) {
+        const nextIndex = (idx + 1) % places.length;
+        const isMobile = window.innerWidth <= 768;
+
+        // Мобильная ветка — простая последовательная анимация: одновременно скрываем весь левый блок и правые мини,
+        // меняем контент и показываем.
+        if (isMobile) {
+            const hideDur = 0.3;
+            await Promise.all([
+                tweenToPromise([leftImg, titleEl, descEl], { opacity: 0, duration: hideDur, ease: "power1.out" }),
+                // если мини есть — скрываем их
+                rightTop ? tweenToPromise(rightTop, { opacity: 0, duration: hideDur, ease: "power1.out" }) : Promise.resolve(),
+                rightBottom ? tweenToPromise(rightBottom, { opacity: 0, duration: hideDur, ease: "power1.out" }) : Promise.resolve()
+            ]);
+
+            setLeftContent(nextIndex);
+            setRightImages(nextIndex);
+
+            // показываем всё обратно
+            await Promise.all([
+                tweenToPromise([leftImg, titleEl, descEl], { opacity: 1, duration: 0.4, ease: "power1.in" }),
+                rightTop ? tweenToPromise(rightTop, { opacity: 1, duration: 0.4, ease: "power1.in" }) : Promise.resolve(),
+                rightBottom ? tweenToPromise(rightBottom, { opacity: 1, duration: 0.4, ease: "power1.in" }) : Promise.resolve()
+            ]);
+
+            idx = nextIndex;
+            if (onComplete) onComplete();
+            return;
+        }
+
+        // ---- Десктоп: подготовка клона (берём видимую миниатюру) ----
+        const srcImg = rightTop; // текущая видимая миниатюра (до обновления)
+        const srcRect = srcImg.getBoundingClientRect();
+        const targetRect = leftImg.getBoundingClientRect();
+
+        // учёт прокрутки страницы (чтобы позиционирование было корректным)
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+        // создаём клон текущего мини-изображения (для перелёта к большому)
+        const clone = srcImg.cloneNode();
+        document.body.appendChild(clone);
+
+        Object.assign(clone.style, {
+            position: 'absolute',
+            left: (srcRect.left + scrollLeft) + 'px',
+            top: (srcRect.top + scrollTop) + 'px',
+            width: srcRect.width + 'px',
+            height: srcRect.height + 'px',
+            objectFit: 'cover',
+            zIndex: 9999,
+            borderRadius: '10px',
+            margin: 0,
+            transform: 'none',
+            pointerEvents: 'none'
+        });
+
+        // ---- Параллельные анимации ----
+        // 1) Плавно скрываем левый блок (изображение + заголовок + описание) — duration 0.35
+        const fadePromise = tweenToPromise([leftImg, titleEl, descEl], {
+            opacity: 0,
+            duration: 0.35,
+            ease: "power1.out"
+        });
+
+        // 2) Параллельно запускаем перелёт клона к зоне большого изображения — duration 0.6
+        const clonePromise = tweenToPromise(clone, {
+            duration: 0.6,
+            ease: "power2.inOut",
+            left: (targetRect.left + scrollLeft) + 'px',
+            top: (targetRect.top + scrollTop) + 'px',
+            width: targetRect.width + 'px',
+            height: targetRect.height + 'px'
+        });
+
+        // 3) Параллельно обрабатываем правые мини: fade out, замена и полёт/появление — animateRightImages управляет этим
+        const rightPromise = animateRightImages(nextIndex);
+
+        // Ждём, пока все три параллельных процесса завершатся (fade left, clone-полет, animateRightImages)
+        await Promise.all([fadePromise, clonePromise, rightPromise]);
+
+        // Теперь обновляем левый контент на следующий
+        setLeftContent(nextIndex);
+
+        // Плавно показываем новый левый блок (duration 0.35)
+        await tweenToPromise([leftImg, titleEl, descEl], {
+            opacity: 1,
+            duration: 0.35,
+            ease: "power1.in"
+        });
+
+        // Убираем клон и обновляем индекс
+        clone.remove();
+        idx = nextIndex;
+
+        if (onComplete) onComplete();
+    }
+
+    nextBtn.addEventListener('click', async () => {
+        if (nextBtn.disabled) return;
+        nextBtn.disabled = true;
+
+        const inner = nextBtn.querySelector('.next-inner');
+        const width = nextBtn.offsetWidth; // ширина кнопки
+
+        const tl = gsap.timeline({
+            onComplete: () => nextBtn.disabled = false
+        });
+
+        // 1) Сдвигаем текст вправо за границу кнопки
+        tl.to(inner, { x: width, duration: 0.35, ease: "power1.in" });
+
+        // 2) Ставим текст слева за границу
+        tl.set(inner, { x: -width });
+
+        // 3) Двигаем текст обратно в кнопку
+        tl.to(inner, { x: 0, duration: 0.35, ease: "power1.out" });
+
+        // 4) Параллельно запускаем смену контента
+        animateToNext();
+    });
+
+})();
+</script>

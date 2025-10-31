@@ -1,0 +1,165 @@
+<div id="react-root"></div>
+
+<!-- React и ReactDOM -->
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+<!-- Babel для JSX -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<!-- Шрифты -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Open+Sans:ital,wght@0,300;1,300&display=swap"
+  rel="stylesheet">
+
+<style>
+  /* Основной контейнер */
+  .slider-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 77.5%;
+    height: 420px;
+    position: relative;
+    background-color: #4A4B42;
+    border-radius: 10px;
+    overflow: visible;
+    align-items: center;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  /* Левая карточка */
+  .slider-card {
+    width: 320px;
+    height: 320px;
+    position: absolute;
+    left: -160px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #999;
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  .slider-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .slider-card-name {
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    color: white;
+    font-family: "Cinzel", serif;
+    font-weight: bold;
+    font-size: 36px;
+    text-align: center;
+    text-shadow: 0px 4px 2px rgba(0, 0, 0, 1);
+  }
+
+  /* Центральная часть */
+  .slider-content {
+    flex: 1;
+    margin-left: 180px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 20px;
+    height: 100%;
+  }
+
+  .slider-title {
+    margin: 0;
+    font-family: "Cinzel", serif;
+    color: white;
+    font-weight: 400;
+    font-size: 40px;
+  }
+
+  .slider-text {
+    margin: auto 0;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 300;
+    color: white;
+    font-style: italic;
+    font-size: 32px;
+  }
+
+  /* Кнопка со стрелкой */
+  .slider-button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin-left: 20px;
+    padding: 10px;
+  }
+
+  @media (max-width: 1024px) {
+    .slider-title {
+      font-size: 32px;
+    }
+
+    .slider-text {
+      font-size: 20px;
+    }
+  }
+</style>
+
+<script type="text/babel">
+  function Slider() {
+    const slides = [
+      {
+        text: "“Our trip to Paris was unforgettable! The Eiffel Tower at night took our breath away, and the city’s charm was everywhere. We can’t wait to come back again!”",
+        img: "http://yurii.free.nf/wp-content/uploads/2025/09/Rectangle-10.png",
+        name: "Olivia"
+      },
+      {
+        text: "“Paris exceeded all our expectations! From the cozy cafés to the breathtaking view from Montmartre, every moment was unforgettable. The city’s beauty and atmosphere left us wanting more!”",
+        img: "http://yurii.free.nf/wp-content/uploads/2025/10/mina-rad-AEVUFpDGxZM-unsplash-e1761851670439.jpg",
+        name: "Ivan"
+      },
+      {
+        text: "“Our Paris tour was simply amazing! Walking along the Seine and seeing the illuminated bridges at night felt like a dream. The city’s elegance and charm captured our hearts—we’re already looking forward to our next visit!”",
+        img: "http://yurii.free.nf/wp-content/uploads/2025/10/mika-ruusunen-W0i1N6FdCWA-unsplash.jpg",
+        name: "Malabo"
+      }
+    ];
+
+    const [current, setCurrent] = React.useState(0);
+    const slide = slides[current];
+
+    const nextSlide = () => setCurrent((prev) => (prev + 1) % slides.length);
+
+    return (
+      <div className="slider-container">
+        {/* Левая карточка */}
+        <div className="slider-card">
+          <img src={slide.img} alt={slide.name} />
+          <div className="slider-card-name">{slide.name}</div>
+        </div>
+
+        {/* Центральный контент */}
+        <div className="slider-content">
+          <h3 className="slider-title">Our satisfied clients</h3>
+          <p className="slider-text">{slide.text}</p>
+        </div>
+
+        {/* Кнопка со стрелкой */}
+        <button onClick={nextSlide} className="slider-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="183" viewBox="0 0 48 183" fill="none">
+            <line x1="4.47685" y1="0.621805" x2="45.9333" y2="91.6238" stroke="#FFD700" strokeWidth="3" />
+            <line x1="45.458" y1="91.9053" x2="1.3461" y2="181.65" stroke="#FFD700" strokeWidth="3" />
+          </svg>
+        </button>
+      </div>
+    );
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById("react-root"));
+  root.render(<Slider />);
+</script>
