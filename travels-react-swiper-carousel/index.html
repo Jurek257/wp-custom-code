@@ -1,0 +1,74 @@
+<div id="react-root"></div>
+
+<!-- React и ReactDOM -->
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+<!-- Babel для JSX -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<!-- Swiper CSS и JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+<!-- Swiper React UMD (для использования через CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-react.umd.min.js"></script>
+
+<!-- Шрифты -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Open+Sans:ital,wght@0,300;1,300&display=swap"
+  rel="stylesheet">
+
+<script type="text/babel">
+  const { Swiper, SwiperSlide } = window.SwiperReact;
+  const { EffectCoverflow, Pagination } = window.Swiper;
+
+  function Carousel3D() {
+    const slides = [
+      { text: "Отзыв 1", img: "http://yurii.free.nf/wp-content/uploads/2025/09/Rectangle-10.png", name: "Olivia" },
+      { text: "Отзыв 2", img: "http://yurii.free.nf/wp-content/uploads/2025/10/mina-rad-AEVUFpDGxZM-unsplash-e1761851670439.jpg", name: "Ivan" },
+      { text: "Отзыв 3", img: "http://yurii.free.nf/wp-content/uploads/2025/10/mika-ruusunen-W0i1N6FdCWA-unsplash.jpg", name: "Malabo" }
+    ];
+
+    return (
+      <Swiper
+        effect="coverflow"
+        grabCursor={true}
+        centeredSlides={true}
+        slidesPerView="auto"
+        coverflowEffect={{
+          rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true
+        }}
+        pagination={{ clickable: true }}
+        modules={[EffectCoverflow, Pagination]}
+        style={{ width: "80%", height: "420px", margin: "auto" }}
+      >
+        {slides.map((slide, i) => (
+          <SwiperSlide
+            key={i}
+            style={{
+              width: "300px",
+              height: "300px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }}
+          >
+            <img src={slide.img} alt={slide.name} style={{ width: "100%", borderRadius: "10px" }} />
+            <h3 style={{ color: "#fff", marginTop: "10px" }}>{slide.name}</h3>
+            <p style={{ color: "#fff", fontStyle: "italic", textAlign: "center" }}>{slide.text}</p>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    );
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById("react-root"));
+  root.render(<Carousel3D />);
+</script>
+
+
