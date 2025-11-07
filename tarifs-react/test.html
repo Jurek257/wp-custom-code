@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <style>
+        .swiper {
+            width: 83.3%;
+        }
+
+        .swiper-wrapper {
+
+            perspective: 1000px;
+        }
+
+        .swiper-slide {
+            width: 320px;
+            height: 480px;
+            flex: 0 0 auto;
+        }
+
+        .card-inner {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            transition: 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .swiper-slide-front {
+            background-color: yellowgreen;
+            color: yellowgreen;
+            transform: rotateY(0deg);
+        }
+
+        .swiper-slide-back {
+            background-color: aqua;
+            color: aqua;
+            transform: rotateY(180deg);
+        }
+
+        .swiper-slide-front,
+        .swiper-slide-back {
+            backface-visibility: hidden;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Slider main container -->
+    <div class="swiper">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+            <!-- Slides -->
+            <div class="swiper-slide">
+                <div class="card-inner">
+
+                    <div class="swiper-slide-front">Slide 1 front</div>
+                    <div class="swiper-slide-back">Slide 1 back</div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="card-inner">
+                    <div class="swiper-slide-front">Slide 2 front</div>
+                    <div class="swiper-slide-back">Slide 2 back</div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="card-inner">
+                    <div class="swiper-slide-front">Slide 3 front</div>
+                    <div class="swiper-slide-back">Slide 3 back</div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="card-inner">
+                    <div class="swiper-slide-front">Slide 4 front</div>
+                    <div class="swiper-slide-back">Slide 4 back</div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="card-inner">
+                    <div class="swiper-slide-front">Slide 5 front</div>
+                    <div class="swiper-slide-back">Slide 5 back</div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="card-inner">
+                    <div class="swiper-slide-front">Slide 6 front</div>
+                    <div class="swiper-slide-back">Slide 6 back</div>
+                </div>
+            </div>
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
+        <!-- <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div> -->
+
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<script>
+
+    const swiper = new Swiper('.swiper', {
+        loop: true,
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        spaceBetween: 40,
+        navigation: {
+            prevEL: '.swiper-button-prev', nextEl: '.swiper-button-next'
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    });
+
+    const slides = document.querySelectorAll('.swiper-slide');
+
+    function disableSliding() {
+        swiper.allowSlideNext = false;
+        swiper.allowSlidePrev = false;
+    }
+    function enableSliding() {
+        swiper.allowSlideNext = true;
+        swiper.allowSlidePrev = true;
+    }
+
+    function closeAllFlips() {
+        document.querySelectorAll('.card-inner.is-flipped').forEach(inner => {
+            inner.classList.remove('is-flipped');
+        });
+        enableSliding();
+    }
+
+    slides.forEach(slide => {
+        slide.addEventListener('click', () => {
+            const inner = slide.querySelector('.card-inner');
+            const isFlipped = inner.classList.contains('is-flipped')
+
+            if (slide !== swiper.slides[swiper.activeIndex]) {
+                swiper.slideToLoop(slide.swiperSlideIndex, 200);
+                setTimeout(() => { closeAllFlips(); inner.classList.add('is-flipped'); disableSliding(); }, 200);
+            } else {
+                if (isFlipped) {
+                    inner.classList.remove('is-flipped');
+                    enableSliding();
+                } else {
+                    closeAllFlips();
+                    inner.classList.add('is-flipped');
+                    disableSliding();
+                }
+            }
+        })
+    })
+
+    /* //counting count of visible slides
+    window.addEventListener('resize', () => {
+    const cardWidth = 320;
+    const containerWidth = document.querySelector('.swiper').offsetWidth;
+    let slidesToShow = Math.floor(containerWidth / cardWidth);
+    slidesToShow = Math.min(slidesToShow,3);
+    slidesToShow = Math.max(slidesToShow,1);
+    const remainingSpace = containerWidth - (cardWidth * slidesToShow);
+    if (slidesToShow > 1) {
+    swiper.params.spaceBetween = remainingSpace / (slidesToShow - 1);
+    };
+    if (slidesToShow === 1) {
+
+}
+
+    swiper.params.slidesPerView = slidesToShow;
+    swiper.update();
+}); */
+
+
+</script>
+
+</html>
