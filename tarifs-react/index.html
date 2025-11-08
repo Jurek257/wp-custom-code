@@ -1,569 +1,301 @@
-<!-- Paste this entire block into an HTML element in Elementor -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-<style>
-  /* --- BASIC LAYOUT --- */
-  #pricing-flip-carousel {
-    margin: 0 auto;
-    width: 83.3%;
-    padding: 28px 16px;
-    box-sizing: border-box;
-    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  }
+<!DOCTYPE html>
+<html lang="ru">
 
-  .swiper {
-    padding-bottom: 36px;
-    overflow: visible;
-  }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pseudo-loop Swiper</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; padding: 40px; box-sizing: border-box; }
+    .swiper { width: 83.3%; margin: 0 auto; }
+    .swiper-wrapper { perspective: 1000px; }
 
-  .card-wrap {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    .swiper-slide {
+      width: 320px;
+      height: 480px;
+      flex: 0 0 auto;
+      box-sizing: border-box;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
 
-  /* card size */
-  .card {
-    width: 320px;
-    height: 420px;
-    perspective: 1200px;
-    cursor: pointer;
-  }
+    /* Карточка (двусторонняя) */
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+    .card-inner.is-flipped { transform: rotateY(180deg); }
 
-  /* 3D container */
-  .card-inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(.2, .9, .3, 1), box-shadow .25s;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-  }
+    .swiper-slide-front,
+    .swiper-slide-back {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      font-weight: 700;
+      font-size: 20px;
+    }
 
-  /* front / back faces */
-  .card-face {
-    position: absolute;
-    inset: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    display: flex;
-    flex-direction: column;
-  }
+    /* фронт/бек (контрастные цвета, чтобы текст был виден) */
+    .swiper-slide-front { background: linear-gradient(180deg,#7bd389,#4aa86b); color: #fff; }
+    .swiper-slide-back  { background: linear-gradient(180deg,#7be9ff,#3fb1c9); color: #033; transform: rotateY(180deg); }
 
-  /* front styling */
-  .card-front {
-    background: #fff;
-  }
+    /* делаем пагинацию чуть ниже */
+    .swiper-pagination { margin-top: 18px; }
 
-  /* Верхняя часть карточки (75%) */
-  .card-image {
-    position: relative;
-    flex: 0 0 75%;
-    background-size: cover;
-    background-position: center;
-  }
+    /* адаптив */
+    @media (max-width: 900px) {
+      .swiper-slide { width: 280px; height: 420px; }
+    }
+    @media (max-width: 520px) {
+      .swiper-slide { width: 220px; height: 340px; }
+    }
+  </style>
+</head>
 
-  /* Цена в верхнем правом углу */
-  .card-price-tag {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: #FF7676;
-    /* новый цвет */
-    color: #fff;
-    font-weight: 700;
-    font-size: 22px;
-    padding: 6px 10px;
-    border-radius: 6px;
-  }
+<body>
+  <h2>Псевдо-loop Swiper — клик → центр → flip</h2>
 
-  /* Нижняя часть карточки (25%) */
-  .card-details {
-    flex: 0 0 25%;
-    background: #f1f3f5;
-    padding: 12px 16px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: #4A4B42;
-    color: #fff;
-    /* текст нижней части */
-  }
-
-  .card-title {
-    font-family: 'CINZEL', serif;
-    /* шрифт CINZEL Bold */
-    font-weight: 700;
-    font-size: 28px;
-    margin-bottom: 4px;
-  }
-
-  .card-subtitle {
-    font-family: 'Open Sans', sans-serif;
-    /* шрифт Open Sans Light */
-    font-weight: 300;
-    font-size: 18px;
-    line-height: 1.3;
-  }
-
-  /* back face (rotated) */
-  .card-back {
-    transform: rotateY(180deg);
-    background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
-    padding: 16px;
-    color: #4A4B42;
-  }
-
-  /* flip state */
-  .card.is-flipped .card-inner {
-    transform: rotateY(180deg);
-  }
-
-  /* slight scaling / opacity for side slides; adjust via Swiper classes */
-  .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .swiper-slide .card {
-    transition: transform .45s, opacity .45s;
-  }
-
-  /* Active center */
-  .swiper-slide-active .card {
-    transform: scale(1);
-    opacity: 1;
-    z-index: 3;
-  }
-
-  /* Nearby sides */
-  .swiper-slide-next .card,
-  .swiper-slide-prev .card {
-    transform: scale(0.94);
-    opacity: 0.78;
-    z-index: 2;
-    filter: none;
-  }
-
-  /* Far slides (if any) */
-  .swiper-slide:not(.swiper-slide-active):not(.swiper-slide-next):not(.swiper-slide-prev) .card {
-    transform: scale(0.9);
-    opacity: 0.6;
-  }
-
-  /* overlay blur when one card is flipped */
-  .carousel-blurred .swiper-slide .card {
-    filter: brightness(.9);
-    transition: filter .25s, transform .25s;
-    pointer-events: none;
-  }
-
-  /* except allow the flipped card to be interactive */
-  .carousel-blurred .swiper-slide-active .card {
-    filter: none;
-    pointer-events: auto;
-    transform: scale(1.02);
-  }
-
-  /* small hint text and controls */
-  .controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-top: 12px;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border: 1px solid #e6e9ef;
-    background: #fff;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #0f172a;
-  }
-
-  .btn:active {
-    transform: translateY(1px);
-  }
-
-  /* buy button on back */
-  .buy-btn {
-    background: #0b63d6;
-    color: #fff;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-  }
-
-  /* responsive */
-  @media (max-width: 1023px) {
-    /* .card { width: 300px; height: 380px; } */
-  }
-
-  @media (max-width: 767px) {
-    /* .card { width: 86%; height: 380px; }
-  .controls { display:flex; justify-content:center; gap:8px; } */
-  }
-</style>
-
-
-<div id="pricing-flip-carousel" aria-live="polite">
-  <div class="swiper mySwiper">
+  <div class="swiper">
     <div class="swiper-wrapper">
-
-      <!-- Slide 1: Эконом -->
       <div class="swiper-slide">
-        <div class="card" data-id="t1">
-          <div class="card-inner">
-            <div class="card-face card-front">
-              <div class="card-image" style="background-image:url('https://picsum.photos/400/300?1');">
-                <div class="card-price-tag">129€</div>
-              </div>
-              <div class="card-details">
-                <div class="card-title">Эконом</div>
-                <div class="card-subtitle">Перелёт, базовый отель, завтрак</div>
-              </div>
-            </div>
-            <div class="card-face card-back">
-              <div style="font-weight:700; font-size:18px;">Эконом — подробнее</div>
-              <div style="margin-top:8px;color:#475569;">Включено: перелёт эконом-классом, отель 2★, базовый пакет
-                услуг.</div>
-              <ul style="margin-top:12px;color:#334155;">
-                <li>- Багаж 20 кг</li>
-                <li>- Время вылета удобное</li>
-                <li>- Опции платные</li>
-              </ul>
-              <div style="display:flex;justify-content:space-between;align-items:center; margin-top:12px;">
-                <button class="buy-btn" data-id="t1-buy">Купить тариф</button>
-                <button class="btn close-back" data-id="t1">Закрыть</button>
-              </div>
-            </div>
-          </div>
+        <div class="card-inner">
+          <div class="swiper-slide-front">Slide 1 front</div>
+          <div class="swiper-slide-back">Slide 1 back</div>
         </div>
       </div>
 
-      <!-- Slide 2: Комфорт -->
       <div class="swiper-slide">
-        <div class="card" data-id="t2">
-          <div class="card-inner">
-            <div class="card-face card-front">
-              <div class="card-image" style="background-image:url('https://picsum.photos/400/300?2');">
-                <div class="card-price-tag">199€</div>
-              </div>
-              <div class="card-details">
-                <div class="card-title">Комфорт</div>
-                <div class="card-subtitle">Отель 3★, трансфер включён, завтрак</div>
-              </div>
-            </div>
-            <div class="card-face card-back">
-              <div style="font-weight:700; font-size:18px;">Комфорт — подробнее</div>
-              <div style="margin-top:8px;color:#475569;">Отель 3★, трансфер включён, удобные рейсы.</div>
-              <ul style="margin-top:12px;color:#334155;">
-                <li>- Завтрак включён</li>
-                <li>- Бесплатная отмена до 48 часов</li>
-              </ul>
-              <div style="display:flex;justify-content:space-between;align-items:center; margin-top:12px;">
-                <button class="buy-btn" data-id="t2-buy">Купить тариф</button>
-                <button class="btn close-back" data-id="t2">Закрыть</button>
-              </div>
-            </div>
-          </div>
+        <div class="card-inner">
+          <div class="swiper-slide-front">Slide 2 front</div>
+          <div class="swiper-slide-back">Slide 2 back</div>
         </div>
       </div>
 
-      <!-- Slide 3: Премиум -->
       <div class="swiper-slide">
-        <div class="card" data-id="t3">
-          <div class="card-inner">
-            <div class="card-face card-front">
-              <div class="card-image" style="background-image:url('https://picsum.photos/400/300?3');">
-                <div class="card-price-tag">349€</div>
-              </div>
-              <div class="card-details">
-                <div class="card-title">Премиум</div>
-                <div class="card-subtitle">Бизнес-класс, отель 5★, экскурсии</div>
-              </div>
-            </div>
-            <div class="card-face card-back">
-              <div style="font-weight:700; font-size:18px;">Премиум — подробнее</div>
-              <div style="margin-top:8px;color:#475569;">Бизнес-класс, отель 5★, экскурсии включены.</div>
-              <ul style="margin-top:12px;color:#334155;">
-                <li>- VIP трансфер</li>
-                <li>- Эксклюзивные экскурсии</li>
-              </ul>
-              <div style="display:flex;justify-content:space-between;align-items:center; margin-top:12px;">
-                <button class="buy-btn" data-id="t3-buy">Купить тариф</button>
-                <button class="btn close-back" data-id="t3">Закрыть</button>
-              </div>
-            </div>
-          </div>
+        <div class="card-inner">
+          <div class="swiper-slide-front">Slide 3 front</div>
+          <div class="swiper-slide-back">Slide 3 back</div>
         </div>
       </div>
 
-      <!-- Slide 4: Семейный -->
       <div class="swiper-slide">
-        <div class="card" data-id="t4">
-          <div class="card-inner">
-            <div class="card-face card-front">
-              <div class="card-image" style="background-image:url('https://picsum.photos/400/300?4');">
-                <div class="card-price-tag">279€</div>
-              </div>
-              <div class="card-details">
-                <div class="card-title">Семейный</div>
-                <div class="card-subtitle">2 взр. + 2 дет., апартаменты, парки</div>
-              </div>
-            </div>
-            <div class="card-face card-back">
-              <div style="font-weight:700; font-size:18px;">Семейный — подробнее</div>
-              <div style="margin-top:8px;color:#475569;">Подходит для семьи: апартаменты, детские активности.</div>
-              <div style="display:flex;justify-content:space-between;align-items:center; margin-top:12px;">
-                <button class="buy-btn" data-id="t4-buy">Купить тариф</button>
-                <button class="btn close-back" data-id="t4">Закрыть</button>
-              </div>
-            </div>
-          </div>
+        <div class="card-inner">
+          <div class="swiper-slide-front">Slide 4 front</div>
+          <div class="swiper-slide-back">Slide 4 back</div>
         </div>
       </div>
 
-      <!-- Slide 5: LUX -->
       <div class="swiper-slide">
-        <div class="card" data-id="lux">
-          <div class="card-inner">
-            <div class="card-face card-front">
-              <div class="card-image" style="background-image:url('https://picsum.photos/400/300?5');">
-                <div class="card-price-tag">499€</div>
-              </div>
-              <div class="card-details">
-                <div class="card-title">LUX</div>
-                <div class="card-subtitle">Бизнес + люкс отель, персональный трансфер</div>
-              </div>
-            </div>
-            <div class="card-face card-back">
-              <div style="font-weight:700; font-size:18px;">LUX — подробнее</div>
-              <div style="margin-top:8px;color:#475569;">Максимальный комфорт: люксовый отель, персональный сервис и
-                эксклюзив.</div>
-              <ul style="margin-top:12px;color:#334155;">
-                <li>- Личные гиды</li>
-                <li>- Приватные трансферы</li>
-                <li>- Гарантированные лучшие места</li>
-              </ul>
-              <div style="display:flex;justify-content:space-between;align-items:center; margin-top:12px;">
-                <button class="buy-btn" data-id="lux-buy">Купить тариф</button>
-                <button class="btn close-back" data-id="lux">Закрыть</button>
-              </div>
-            </div>
-          </div>
+        <div class="card-inner">
+          <div class="swiper-slide-front">Slide 5 front</div>
+          <div class="swiper-slide-back">Slide 5 back</div>
         </div>
       </div>
 
-      <!-- Slide 6: PRESIDENT -->
       <div class="swiper-slide">
-        <div class="card" data-id="president">
-          <div class="card-inner">
-            <div class="card-face card-front">
-              <div class="card-image" style="background-image:url('https://picsum.photos/400/300?6');">
-                <div class="card-price-tag">1299€</div>
-              </div>
-              <div class="card-details">
-                <div class="card-title">PRESIDENT</div>
-                <div class="card-subtitle">Абсолютный VIP, частный джет, палаты в дворцах</div>
-              </div>
-            </div>
-            <div class="card-face card-back">
-              <div style="font-weight:700; font-size:18px;">PRESIDENT — подробнее</div>
-              <div style="margin-top:8px;color:#475569;">Ультра-VIP: частный джет, эксклюзивный консьерж, закрытые
-                мероприятия и апартаменты высшей категории.</div>
-              <ul style="margin-top:12px;color:#334155;">
-                <li>- Частный транспорт и джет</li>
-                <li>- Персональный консьерж 24/7</li>
-                <li>- Эксклюзивные приглашения</li>
-              </ul>
-              <div style="display:flex;justify-content:space-between;align-items:center; margin-top:12px;">
-                <button class="buy-btn" data-id="president-buy">Купить тариф</button>
-                <button class="btn close-back" data-id="president">Закрыть</button>
-              </div>
-            </div>
-          </div>
+        <div class="card-inner">
+          <div class="swiper-slide-front">Slide 6 front</div>
+          <div class="swiper-slide-back">Slide 6 back</div>
         </div>
       </div>
-
     </div>
 
-    <!-- Navigation -->
+    <!-- пагинация -->
     <div class="swiper-pagination"></div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-<script>
-  (function () {
-    // Init Swiper
-    const swiper = new Swiper('.mySwiper', {
-      slidesPerView: 3,
-      spaceBetween: 10,
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script>
+    /*
+      Псевдо-loop реализация:
+      - loop: false (мы ручками будем перемещать слайды в DOM)
+      - slidesPerView: 'auto', centeredSlides: true (peek эффект)
+      - при клике на боковой слайд: сначала slideTo, дождаться transitionEnd,
+        затем, при необходимости, переместить DOM (append/prepend) и синхронизировать Swiper без анимации,
+        затем сделать flip центрального слайда.
+    */
+
+    const swiper = new Swiper('.swiper', {
+      loop: false,
+      slidesPerView: 'auto',
       centeredSlides: true,
-      loop: true,
+      spaceBetween: 40,
+      speed: 300,
       pagination: { el: '.swiper-pagination', clickable: true },
-      breakpoints: {
-        0: { slidesPerView: 1, centeredSlides: true },
-        768: { slidesPerView: 2, centeredSlides: false },
-        1024: { slidesPerView: 3, centeredSlides: true },
-      },
-      on: {
-        slideChange: () => {
-          closeAllFlips(); // close flips on slide change
-        }
-      }
     });
 
-    const carouselRoot = document.getElementById('pricing-flip-carousel');
-    const wrapper = carouselRoot.querySelector('.swiper-wrapper');
+    // удобные ссылки
+    const wrapper = swiper.wrapperEl; // .swiper-wrapper
+    const slides = () => Array.from(wrapper.querySelectorAll('.swiper-slide'));
 
-    // Helper: get card from a slide element
-    function findCardFromEl(el) {
-      if (!el) return null;
-      return el.closest('.card');
-    }
+    let isAnimating = false;        // блокировка для предотвращения конфликтов
+    let clickedSlideRef = null;     // какую карточку кликнули (DOM element)
+    let pendingDirection = null;    // 'next' или 'prev' — если нужно переставление DOM после перехода
 
-    // Flip handling
-    function closeAllFlips() {
-      document.querySelectorAll('.card.is-flipped').forEach(c => c.classList.remove('is-flipped'));
-      carouselRoot.classList.remove('carousel-blurred');
-      enableSwiper();
-    }
-
-    function enableSwiper() {
-      swiper.allowSlideNext = true;
-      swiper.allowSlidePrev = true;
-    }
-    function disableSwiper() {
+    function disableInteraction() {
+      isAnimating = true;
       swiper.allowSlideNext = false;
       swiper.allowSlidePrev = false;
     }
+    function enableInteraction() {
+      isAnimating = false;
+      swiper.allowSlideNext = true;
+      swiper.allowSlidePrev = true;
+    }
 
-    // Click on a card: if it's center -> toggle flip, otherwise slideTo it
-    wrapper.addEventListener('click', function (e) {
-      const card = findCardFromEl(e.target);
-      if (!card) return;
-      const slideEl = card.closest('.swiper-slide');
-      const slideIndex = Array.from(slideEl.parentElement.children).indexOf(slideEl);
-      const activeIndex = swiper.realIndex;
+    // закроем все флипы
+    function closeAllFlips() {
+      wrapper.querySelectorAll('.card-inner.is-flipped').forEach(inner => inner.classList.remove('is-flipped'));
+    }
 
-      // Determine if clicked slide is the active one (center)
-      // Note: Swiper's realIndex refers to slide order; compare with slideEl index in slides
-      // Simpler: check if slideEl has class 'swiper-slide-active'
-      const isActive = slideEl.classList.contains('swiper-slide-active');
+    // сделает flip для переданного слайда (DOM node)
+    function flipSlideNode(slideEl) {
+      if (!slideEl) return;
+      const inner = slideEl.querySelector('.card-inner');
+      if (!inner) return;
+      closeAllFlips();
+      inner.classList.add('is-flipped');
+      disableInteraction();
+    }
 
-      if (!isActive) {
-        // move to this slide
-        const index = swiper.slides.indexOf(slideEl);
-        if (index >= 0) swiper.slideTo(index);
+    // получить "реальный" индекс слайда среди текущих слайдов (0..N-1)
+    function realIndexOf(slideEl) {
+      return slides().indexOf(slideEl);
+    }
+
+    // навешивание кликов на слайды
+    function attachSlideClicks() {
+      slides().forEach(slide => {
+        // удаляем старый слушатель если был
+        if (slide._pseudoHandler) slide.removeEventListener('click', slide._pseudoHandler);
+
+        const handler = (e) => {
+          if (isAnimating) return;
+          const clicked = e.currentTarget;
+
+          // DOM-элемент активного слайда (тот, что центрирован)
+          const activeSlide = swiper.slides[swiper.activeIndex];
+
+          // если кликнули по центральному слайду — сразу переворачиваем/закрываем
+          if (clicked === activeSlide) {
+            const inner = clicked.querySelector('.card-inner');
+            if (inner.classList.contains('is-flipped')) {
+              inner.classList.remove('is-flipped');
+              enableInteraction();
+            } else {
+              closeAllFlips();
+              inner.classList.add('is-flipped');
+              disableInteraction();
+            }
+            return;
+          }
+
+          // клик по боковой карточке -> двигаем сперва к ней
+          clickedSlideRef = clicked;
+          disableInteraction();
+
+          // определить направление относительно активного
+          const activeIdx = swiper.slides.indexOf(activeSlide);
+          const clickedIdx = swiper.slides.indexOf(clicked);
+
+          // защита: если не нашли индекс (должно быть найдено), используем realIndex
+          let dir;
+          if (clickedIdx === -1 || activeIdx === -1) {
+            // fallback: сравниваем реальные индексы
+            const rClicked = realIndexOf(clicked);
+            const rActive = realIndexOf(activeSlide);
+            dir = (rClicked > rActive) ? 'next' : 'prev';
+          } else {
+            dir = (clickedIdx > activeIdx) ? 'next' : 'prev';
+          }
+          pendingDirection = dir;
+
+          // плавно прокручиваем к clicked (slideTo по DOM-индексу)
+          // slideTo принимает индекс в текущем массиве swiper.slides
+          swiper.slideTo(clickedIdx, swiper.params.speed);
+          // flip произойдёт в обработчике transitionEnd
+        };
+
+        slide.addEventListener('click', handler);
+        slide._pseudoHandler = handler;
+      });
+    }
+
+    // когда transition закончился — делаем возможную перестановку DOM и flip
+    swiper.on('transitionEnd', () => {
+      // если не было клика — просто разблокируем
+      if (!clickedSlideRef) {
+        enableInteraction();
         return;
       }
 
-      // If active — toggle flip
-      const already = card.classList.contains('is-flipped');
-      if (already) {
-        card.classList.remove('is-flipped');
-        carouselRoot.classList.remove('carousel-blurred');
-        enableSwiper();
+      const currentSlides = slides();
+      const activeDomIndex = swiper.activeIndex;
+
+      // Если шли вправо и активный индекс близок к концу — перемещаем первый в конец
+      if (pendingDirection === 'next') {
+        if (activeDomIndex >= currentSlides.length - 2) {
+          wrapper.appendChild(currentSlides[0]);
+          swiper.update(); // пересобираем внутренний массив
+          // скорректируем позицию мгновенно (без анимации)
+          const newIndex = Math.max(0, swiper.activeIndex - 1);
+          swiper.slideTo(newIndex, 0);
+        }
+      } else if (pendingDirection === 'prev') {
+        // если шли влево и активный индекс близок к началу — перемещаем последний в начало
+        if (activeDomIndex <= 1) {
+          const last = currentSlides[currentSlides.length - 1];
+          wrapper.insertBefore(last, currentSlides[0]);
+          swiper.update();
+          const newIndex = Math.min(swiper.slides.length - 1, swiper.activeIndex + 1);
+          swiper.slideTo(newIndex, 0);
+        }
+      }
+
+      // Теперь, если кликнутый слайд стал активным — делаем flip
+      const activeSlide = swiper.slides[swiper.activeIndex];
+      if (clickedSlideRef === activeSlide) {
+        closeAllFlips();
+        const inner = activeSlide.querySelector('.card-inner');
+        if (inner) inner.classList.add('is-flipped');
+        // оставляем interaction заблокированным — пользователь закроет карточку кликом по ней
       } else {
-        // close other flips first
-        closeAllFlips();
-        card.classList.add('is-flipped');
-        // blur others
-        carouselRoot.classList.add('carousel-blurred');
-        // disable sliding while flipped
-        disableSwiper();
-        // focus for accessibility
-        card.setAttribute('aria-pressed', 'true');
+        // в редком случае если не совпало — просто разблокируем
+        enableInteraction();
       }
+
+      // очистка
+      clickedSlideRef = null;
+      pendingDirection = null;
     });
 
-    // Close when clicking close btn on back or clicking outside card
-    document.addEventListener('click', function (e) {
-      // If click outside any card and there is a flipped one -> close all flips
-      const anyFlipped = document.querySelector('.card.is-flipped');
-      if (!anyFlipped) return;
-      const insideCard = !!findCardFromEl(e.target);
-      if (!insideCard) {
-        closeAllFlips();
-      }
+    // навесим клики при стартовой инициализации
+    attachSlideClicks();
+
+    // при обновлении (если мы переставляли слайды) — заново навесим обработчики
+    swiper.on('update', () => {
+      attachSlideClicks();
+      enableInteraction();
     });
 
-    // Close buttons on back
-    document.querySelectorAll('.close-back').forEach(btn => {
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        const id = btn.getAttribute('data-id');
-        const card = document.querySelector('.card[data-id="' + id + '"]');
-        if (card) { card.classList.remove('is-flipped'); }
-        carouselRoot.classList.remove('carousel-blurred');
-        enableSwiper();
-      });
+    // опционально — защита от быстрого ресайза/многокликов (debounce)
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        swiper.update();
+      }, 120);
     });
-
-    // Buy / choose buttons (example actions)
-    document.querySelectorAll('.buy-btn').forEach(b => {
-      b.addEventListener('click', function (e) {
-        e.stopPropagation();
-        const id = b.getAttribute('data-id');
-        // Replace with your action (form open, redirect, etc.)
-        alert('Покупка: ' + id);
-      });
-    });
-    document.querySelectorAll('.choose-btn').forEach(b => {
-      b.addEventListener('click', function (e) {
-        e.stopPropagation();
-        const id = b.getAttribute('data-id');
-        alert('Выбрали: ' + id);
-      });
-    });
-
-    // Keyboard: ESC closes flips; arrows left/right navigate when not flipped
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeAllFlips();
-      if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
-        const anyFlipped = document.querySelector('.card.is-flipped');
-        if (anyFlipped) return; // ignore arrows while flipped
-        if (e.key === 'ArrowLeft') swiper.slidePrev();
-        if (e.key === 'ArrowRight') swiper.slideNext();
-      }
-    });
-
-    // Tilt hint (mouse move) — small tilt only for non-touch
-    function isTouchDevice() { return ('ontouchstart' in window) || navigator.maxTouchPoints > 0; }
-    if (!isTouchDevice()) {
-      document.querySelectorAll('.card').forEach(card => {
-        const inner = card.querySelector('.card-inner');
-        card.addEventListener('mousemove', function (ev) {
-          const rect = card.getBoundingClientRect();
-          const x = (ev.clientX - rect.left) / rect.width; // 0..1
-          const y = (ev.clientY - rect.top) / rect.height;
-          const rotateY = (x - 0.5) * 8; // -4..4 deg
-          const rotateX = (0.5 - y) * 6; // -3..3 deg
-          inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)` + (card.classList.contains('is-flipped') ? ' rotateY(180deg)' : '');
-        });
-        card.addEventListener('mouseleave', function () {
-          // reset
-          inner.style.transform = card.classList.contains('is-flipped') ? 'rotateY(180deg)' : 'rotateX(0deg) rotateY(0deg)';
-        });
-      });
-    }
-  })();
-</script>
+  </script>
+</body>
+</html>
